@@ -13,6 +13,13 @@ class Socket
     use LoggerAwareTrait;
 
     /**
+     * Auth
+     * 
+     * @var \Botika\Socket\Auth
+     */
+    protected Auth $auth;
+
+    /**
      * Http Client
      * 
      * @var \GuzzleHttp\Client
@@ -28,21 +35,21 @@ class Socket
         'connect_timeout' => 10,
         'http_errors' => false,
         'timeout' => 30,
+        'verify' => false,
     ];
 
     /**
      * Constructor.
      * 
+     * @param  string  $baseURL
      * @param  \Botika\Socket\Auth  $auth
-     * @param  array  $config
      */
-    public function __construct(Auth $auth, array $config = [])
+    public function __construct(string $baseURL, Auth $auth)
     {
-        $this->httpClient = new Client(
-            array_merge($config, $this->httpClientDefaultConfig, [
-                'auth' => $auth->toArray()
-            ])
-        );
+        $this->auth = $auth;
+        $this->httpClient = new Client(array_merge($this->httpClientDefaultConfig, [
+            'base_uri' => $baseURL
+        ]));
     }
 
     /**
@@ -88,33 +95,37 @@ class Socket
      * 
      * @param  string|array  $channels
      * @param  string  $event
-     * @param  array|null  $data
+     * @param  array|string|null  $data
+     * @param  array  $config
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function trigger(string|array $channels, string $event, array|null $data): ResponseInterface
+    public function trigger(string|array $channels, string $event, array|string|null $data = null, array $config = []): ResponseInterface
     {
         $this->log('Botika Socket Trigger', $this->makeJsonRequest($channels, $event, $data));
         
-        return $this->httpClient->post('/events', [
+        return $this->httpClient->post('/events', array_merge($config, [
+            'auth' => $this->auth->toArray(),
             'json' => $this->makeJsonRequest($channels, $event, $data),
-        ]);
+        ]));
     }
 
     /**
      * Asynchronously trigger an event by providing event name and payload.
      * Optionally provide a socket ID to exclude a client (most likely the sender).
      * 
-     *  @param  string|array  $channels
+     * @param  string|array  $channels
      * @param  string  $event
-     * @param  array|null  $data
+     * @param  array|string|null  $data
+     * @param  array  $config
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function triggerAsync(string|array $channels, string $event, array|null $data): PromiseInterface
+    public function triggerAsync(string|array $channels, string $event, array|string|null $data = null, array $config = []): PromiseInterface
     {
         $this->log('Botika Socket Trigger Asynchronously', $this->makeJsonRequest($channels, $event, $data));
 
-        return $this->httpClient->postAsync('/events', [
+        return $this->httpClient->postAsync('/events', array_merge($config, [
+            'auth' => $this->auth->toArray(),
             'json' => $this->makeJsonRequest($channels, $event, $data),
-        ]);
+        ]));
     }
 }
