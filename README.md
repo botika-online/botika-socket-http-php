@@ -4,7 +4,7 @@ PHP library for interacting with the Botika Socket HTTP API.
 
 ## Installation
 
-You can get the Bpotika Socket PHP library via a composer package called `socket`. See <https://packagist.org/packages/botika/socket>
+You can get the Botika Socket PHP library via a composer package called `socket`. See <https://packagist.org/packages/botika/socket>
 
 ```bash
 composer require botika/socket
