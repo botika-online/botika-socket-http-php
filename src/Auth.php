@@ -2,23 +2,22 @@
 
 namespace Botika\Socket;
 
-use InvalidArgumentException;
-
 class Auth
 {
-	protected array $config;
+	/**
+	 * Auth
+	 */
+	protected string $username;
+	protected string $password;
 
 	/**
 	 * Constructor
 	 * 
 	 * @param  array  $config
 	 */
-	public function __construct(array $config = []) {
-		if (! isset($config['key']) || empty($config['key'])) {
-			throw new InvalidArgumentException('Auth Key is required');
-		}
-
-		$this->config = $config;
+	public function __construct(string $username, string $password) {
+		$this->username = $username;
+		$this->password = $password;
 	}
 
 	/**
@@ -28,6 +27,6 @@ class Auth
      */
     public function toArray(): array
 	{
-		return $this->config;
+		return [$this->username, $this->password];
 	}
 }
