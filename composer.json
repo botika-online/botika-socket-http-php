@@ -1,0 +1,35 @@
+{
+    "name": "botika/socket",
+    "description": "Botika Socket Http for PHP",
+    "type": "library",
+    "license": "Botika",
+    "autoload": {
+        "psr-4": {
+            "Botika\\Socket\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andri Anto",
+            "email": "andrianto.ykhc@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0",
+        "guzzlehttp/guzzle": "^6.5",
+        "psr/log": "^1.1"
+    },
+    "suggest": {
+        "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
+    },
+    "config": {
+		"optimize-autoloader": true,
+		"preferred-install": "dist",
+		"sort-packages": true,
+        "platform": {
+			"php": "7.0"
+		}
+    },
+    "minimum-stability": "dev",
+	"prefer-stable": true
+}
