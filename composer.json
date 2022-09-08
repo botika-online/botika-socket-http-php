@@ -1,6 +1,6 @@
 {
     "name": "botika/socket",
-    "description": "Botika Socket Http for PHP",
+    "description": "Library for interacting with the Botika Socket REST API",
     "type": "library",
     "license": "MIT",
     "autoload": {
