@@ -29,35 +29,20 @@ then run `composer update`.
 Use the credentials from your Botika Socket application to create a new `Botika\Socket` instance.
 
 ```php
+$baseURL = 'https://socket.example.com';
 $username = 'USERNAME';
 $password = 'PASSWORD';
 $auth = new \Botika\Socket\Auth($username, $password);
 
-// Options get from https://docs.guzzlephp.org/en/stable/request-options.html
-$options = [];
-
 // Initialize socket
-$socket = new \Botika\Socket\Socket($auth, $options);
-```
-
-The second parameter is an `$options` array. The additional options get from <https://docs.guzzlephp.org/en/stable/request-options.html>
-
-For example, by default calls will be made over HTTPS. To use plain
-HTTP you can set verify to false:
-
-```php
-$options = [
-  'base_uri' => 'https://socket.botika.online',
-  'verify' => true
-];
-$socket = new \Botika\Socket\Socket($auth, $options);
+$socket = new \Botika\Socket\Socket($baseURL, $auth);
 ```
 
 ## Logging configuration
 
 The recommended approach of logging is to use a
 [PSR-3](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
-compliant logger implementing `Psr\Log\LoggerInterface`. The `Pusher` object
+compliant logger implementing `Psr\Log\LoggerInterface`. The `Socket` object
 implements `Psr\Log\LoggerAwareInterface`, meaning you call
 `setLogger(LoggerInterface $logger)` to set the logger instance.
 
@@ -74,13 +59,17 @@ To trigger an event on one or more channels use the `trigger` function.
 ### A single channel
 
 ```php
-$socket->trigger('my-channel', 'my_event', 'hello world');
+// Options get from https://docs.guzzlephp.org/en/stable/request-options.html
+$options = [];
+$socket->trigger('my-channel', 'my_event', 'hello world', $options);
 ```
 
 ### Multiple channels
 
 ```php
-$pusher->trigger([ 'channel-1', 'channel-2' ], 'my_event', 'hello world');
+// Options get from https://docs.guzzlephp.org/en/stable/request-options.html
+$options = [];
+$socket->trigger([ 'channel-1', 'channel-2' ], 'my_event', 'hello world', $options);
 ```
 
 ### Asynchronous interface
@@ -90,7 +79,9 @@ promises](https://github.com/guzzle/promises) which can be chained
 with `->then`:
 
 ```php
-$promise = $socket->triggerAsync(['channel-1', 'channel-2'], 'my_event', 'hello world');
+// Options get from https://docs.guzzlephp.org/en/stable/request-options.html
+$options = [];
+$promise = $socket->triggerAsync(['channel-1', 'channel-2'], 'my_event', 'hello world', $options);
 $promise->then(
     function (ResponseInterface $res) {
         echo $res->getStatusCode() . "\n";
@@ -102,28 +93,3 @@ $promise->then(
 );
 $promise->wait();
 ```
-
-### Arrays
-
-Arrays are automatically converted to JSON format:
-
-```php
-$array['name'] = 'joe';
-$array['message_count'] = 23;
-
-$socket->trigger('my_channel', 'my_event', $array);
-```
-
-The output of this will be:
-
-```json
-"{'name': 'joe', 'message_count': 23}"
-```
-
-## License
-
-Copyright 2014, Pusher. Licensed under the MIT license:
-<http://www.opensource.org/licenses/mit-license.php>
-
-Copyright 2010, Squeeks. Licensed under the MIT license:
-<http://www.opensource.org/licenses/mit-license.php>
