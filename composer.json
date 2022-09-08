@@ -2,7 +2,7 @@
     "name": "botika/socket",
     "description": "Botika Socket Http for PHP",
     "type": "library",
-    "license": "Botika",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Botika\\Socket\\": "src/"
