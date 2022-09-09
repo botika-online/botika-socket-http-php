@@ -16,8 +16,8 @@
     ],
     "require": {
         "php": "^7.0 || ^8.0",
-        "guzzlehttp/guzzle": "^6.5",
-        "psr/log": "^1.1"
+        "guzzlehttp/guzzle": "^7.0",
+        "psr/log": "^3.0"
     },
     "suggest": {
         "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
@@ -25,10 +25,7 @@
     "config": {
 		"optimize-autoloader": true,
 		"preferred-install": "dist",
-		"sort-packages": true,
-        "platform": {
-			"php": "7.0"
-		}
+		"sort-packages": true
     },
     "minimum-stability": "dev",
 	"prefer-stable": true
