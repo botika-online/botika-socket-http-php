@@ -60,7 +60,7 @@ class Socket
      * @param  array|null  $data
      * @return array
      */
-    protected function makeJsonRequest(string|array $channels, string $event, array|string|null $data): array
+    protected function makeJsonRequest($channels, string $event, $data): array
     {
         if (is_string($channels)) {
             $channels = [$channels];
@@ -99,7 +99,7 @@ class Socket
      * @param  array  $config
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function trigger(string|array $channels, string $event, array|string|null $data = null, array $config = []): ResponseInterface
+    public function trigger($channels, string $event, $data = null, array $config = []): ResponseInterface
     {
         $this->log('Botika Socket Trigger', $this->makeJsonRequest($channels, $event, $data));
         
@@ -119,7 +119,7 @@ class Socket
      * @param  array  $config
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function triggerAsync(string|array $channels, string $event, array|string|null $data = null, array $config = []): PromiseInterface
+    public function triggerAsync($channels, string $event, $data = null, array $config = []): PromiseInterface
     {
         $this->log('Botika Socket Trigger Asynchronously', $this->makeJsonRequest($channels, $event, $data));
 
